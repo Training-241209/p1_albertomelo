@@ -52,8 +52,8 @@ export function AllReimbursementList() {
                 initialStatus={reimbursement.status}
                 onChange={(newStatus) =>
                   updateStatusMutation.mutate({
-                    reimbId: reimbursement.reimbId, // Pass reimbId
-                    newStatus, // Pass newStatus
+                    reimbId: reimbursement.reimbId, 
+                    newStatus,
                   })
                 }
               />

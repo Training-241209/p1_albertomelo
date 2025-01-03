@@ -13,7 +13,7 @@ export function useUpdateDescription() {
   return useMutation({
     mutationFn: async ({ reimbId, newDescription }: UpdateDescriptionPayload) => {
         const resp = await axiosInstance.patch(`/reimbursement/update/${reimbId}`, {
-            newDescription,
+          newReimbursementDescription: newDescription,
           });
           return resp.data;
     },

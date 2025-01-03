@@ -24,18 +24,10 @@ import { Route as ProtectedDashboardReimbursementCreateIndexImport } from './rou
 
 // Create Virtual Routes
 
-const AboutLazyImport = createFileRoute('/about')()
-const IndexLazyImport = createFileRoute('/')()
 const AuthAuthRegisterLazyImport = createFileRoute('/_auth/auth/register')()
 const AuthAuthLoginLazyImport = createFileRoute('/_auth/auth/login')()
 
 // Create/Update Routes
-
-const AboutLazyRoute = AboutLazyImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 
 const ProtectedRoute = ProtectedImport.update({
   id: '/_protected',
@@ -46,12 +38,6 @@ const AuthRoute = AuthImport.update({
   id: '/_auth',
   getParentRoute: () => rootRoute,
 } as any)
-
-const IndexLazyRoute = IndexLazyImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 const ProtectedDashboardIndexRoute = ProtectedDashboardIndexImport.update({
   id: '/dashboard/',
@@ -115,13 +101,6 @@ const ProtectedDashboardReimbursementCreateIndexRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -134,13 +113,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof ProtectedImport
-      parentRoute: typeof rootRoute
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
     '/_auth/auth/login': {
@@ -243,9 +215,7 @@ const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
   '': typeof ProtectedRouteWithChildren
-  '/about': typeof AboutLazyRoute
   '/auth/login': typeof AuthAuthLoginLazyRoute
   '/auth/register': typeof AuthAuthRegisterLazyRoute
   '/dashboard': typeof ProtectedDashboardIndexRoute
@@ -257,9 +227,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
   '': typeof ProtectedRouteWithChildren
-  '/about': typeof AboutLazyRoute
   '/auth/login': typeof AuthAuthLoginLazyRoute
   '/auth/register': typeof AuthAuthRegisterLazyRoute
   '/dashboard': typeof ProtectedDashboardIndexRoute
@@ -272,10 +240,8 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexLazyRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_protected': typeof ProtectedRouteWithChildren
-  '/about': typeof AboutLazyRoute
   '/_auth/auth/login': typeof AuthAuthLoginLazyRoute
   '/_auth/auth/register': typeof AuthAuthRegisterLazyRoute
   '/_protected/dashboard/': typeof ProtectedDashboardIndexRoute
@@ -289,9 +255,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | ''
-    | '/about'
     | '/auth/login'
     | '/auth/register'
     | '/dashboard'
@@ -302,9 +266,7 @@ export interface FileRouteTypes {
     | '/dashboard/reimbursement/create'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | ''
-    | '/about'
     | '/auth/login'
     | '/auth/register'
     | '/dashboard'
@@ -315,10 +277,8 @@ export interface FileRouteTypes {
     | '/dashboard/reimbursement/create'
   id:
     | '__root__'
-    | '/'
     | '/_auth'
     | '/_protected'
-    | '/about'
     | '/_auth/auth/login'
     | '/_auth/auth/register'
     | '/_protected/dashboard/'
@@ -331,17 +291,13 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
   AuthRoute: typeof AuthRouteWithChildren
   ProtectedRoute: typeof ProtectedRouteWithChildren
-  AboutLazyRoute: typeof AboutLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexLazyRoute: IndexLazyRoute,
   AuthRoute: AuthRouteWithChildren,
   ProtectedRoute: ProtectedRouteWithChildren,
-  AboutLazyRoute: AboutLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -354,14 +310,9 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
         "/_auth",
-        "/_protected",
-        "/about"
+        "/_protected"
       ]
-    },
-    "/": {
-      "filePath": "index.lazy.tsx"
     },
     "/_auth": {
       "filePath": "_auth.tsx",
@@ -380,9 +331,6 @@ export const routeTree = rootRoute
         "/_protected/dashboard/reimbursement/",
         "/_protected/dashboard/reimbursement/create/"
       ]
-    },
-    "/about": {
-      "filePath": "about.lazy.tsx"
     },
     "/_auth/auth/login": {
       "filePath": "_auth/auth/login.lazy.tsx",

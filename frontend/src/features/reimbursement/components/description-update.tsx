@@ -18,16 +18,27 @@ import {
   
   export function EditDescriptionDialog({
     reimbursementId,
-    currentDescription,
+    currentDescription = "",
   }: EditDescriptionDialogProps) {
-    const [description, setDescription] = useState(currentDescription);
+    const [description, setDescription] = useState(currentDescription || "");
+    const [, setIsDialogOpen] = useState(false);
     const updateDescriptionMutation = useUpdateDescription();
   
     const handleSave = () => {
-      updateDescriptionMutation.mutate({
+      updateDescriptionMutation.mutate(
+        {
         reimbId: reimbursementId,
         newDescription: description,
-      });
+        },
+        {
+          onSuccess: () => {
+            setIsDialogOpen(false);
+            window.location.reload();
+          },
+          onError: (error) => {
+            console.error("Failed to update reimbursement description:", error);
+          }
+        });
     };
   
     return (
